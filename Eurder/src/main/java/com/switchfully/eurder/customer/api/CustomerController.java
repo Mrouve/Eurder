@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/customer")
 public class CustomerController {
@@ -26,5 +28,10 @@ public class CustomerController {
 
 
     //GET===============================================================================================================
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CustomerDto> getAllCustomers(){
+        return customerService.getAllCustomers();
+    }
 
 }

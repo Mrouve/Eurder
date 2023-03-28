@@ -2,6 +2,8 @@ package com.switchfully.eurder.customer.domain;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,5 +19,10 @@ public class CustomerRepository {
     public Customer save(Customer customer){
         Customer savedCustomer = customersByUUID.put(customer.getUuid(), customer);
         return customer;
+    }
+
+    public Collection<Customer> getAllCustomers(){
+        return new ArrayList<>(customersByUUID
+                .values());
     }
 }
