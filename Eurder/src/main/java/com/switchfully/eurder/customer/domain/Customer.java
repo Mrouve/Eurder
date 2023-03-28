@@ -98,5 +98,29 @@ public class Customer {
             return new Customer(firstname, lastname, email, address, phoneNumber);
         }
     }
+    //==================================================================================================================
+    // Getters
+    public UUID getUuid() {
+        return uuid;
+    }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
 }
