@@ -5,7 +5,7 @@ import com.switchfully.eurder.customer.domain.Address;
 import java.util.UUID;
 
 public class CustomerDto {
-    private final UUID uuid;
+    private UUID uuid;
     private String firstname;
     private String lastname;
     private String email;
@@ -21,5 +21,31 @@ public class CustomerDto {
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    // Methods
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
     }
 }

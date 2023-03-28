@@ -17,6 +17,8 @@ class CustomerRepositoryTest {
 
     private CustomerRepository customerRepository = new CustomerRepository();
     private Customer customer;
+
+    private static final int SIZE_SETUP = 2;
     @Autowired
     private CustomerService customerService ;
 
@@ -62,7 +64,7 @@ class CustomerRepositoryTest {
 
         //Then
         assertTrue(((allCustomers.contains(customer2)) && (allCustomers.contains(customer))));
-        assertEquals(2, allCustomers.size());
+        assertEquals(SIZE_SETUP, allCustomers.size());
     }
 
     @Test

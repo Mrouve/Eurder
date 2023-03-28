@@ -2,6 +2,7 @@ package com.switchfully.eurder.customer.service;
 
 import com.switchfully.eurder.customer.domain.Customer;
 import com.switchfully.eurder.customer.domain.CustomerRepository;
+import com.switchfully.eurder.customer.exceptions.InvalidUuidException;
 import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.customer.service.dtos.CustomerDto;
 import com.switchfully.eurder.customer.service.mappers.CustomerMapper;
@@ -39,6 +40,9 @@ public class CustomerService {
     public CustomerDto getOneCustomerByUuid(UUID uuid){
         checkIfAdmin();
         Customer customerToGet = customerRepository.getOneCustomerByUuid(uuid);
+        if(customerToGet == null){
+            throw new InvalidUuidException();
+        }
         return customerMapper.toDto(customerToGet);
     }
 

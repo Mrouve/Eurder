@@ -17,7 +17,7 @@ public class CustomerRepository {
     }
 
     public Customer save(Customer customer){
-        Customer savedCustomer = customersByUUID.put(customer.getUuid(), customer);
+        customersByUUID.put(customer.getUuid(), customer);
         return customer;
     }
 
