@@ -8,6 +8,7 @@ import com.switchfully.eurder.customer.service.mappers.CustomerMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -27,10 +28,22 @@ public class CustomerService {
     }
 
     public List<CustomerDto> getAllCustomers(){
+        checkIfAdmin();
         List<Customer> listOfCustomers = customerRepository
                 .getAllCustomers()
                 .stream()
                 .toList();
         return customerMapper.toDtoList(listOfCustomers);
+    }
+
+    public CustomerDto getOneCustomerByUuid(UUID uuid){
+        checkIfAdmin();
+        Customer customerToGet = customerRepository.getOneCustomerByUuid(uuid);
+        return customerMapper.toDto(customerToGet);
+    }
+
+    public void checkIfAdmin(){
+        //TO DO
+        // throw new UnauthorizedEndPointException();
     }
 }

@@ -25,4 +25,8 @@ public class CustomerRepository {
         return new ArrayList<>(customersByUUID
                 .values());
     }
+
+    public Customer getOneCustomerByUuid(UUID uuid){
+        return customersByUUID.get(uuid);
+    }
 }
