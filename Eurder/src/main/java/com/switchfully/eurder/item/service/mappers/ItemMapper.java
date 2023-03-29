@@ -6,10 +6,10 @@ import com.switchfully.eurder.item.service.dtos.ItemDto;
 
 public class ItemMapper {
     public Item fromDto(CreateItemDto createItemDto){
-        return new Item(createItemDto.getItemName(), createItemDto.getItemDescription(), createItemDto.getItemInStock());
+        return new Item(createItemDto.getItemName(), createItemDto.getItemDescription(), createItemDto.getItemPrice(),createItemDto.getItemInStock());
     }
 
     public ItemDto toDto(Item item){
-        return new ItemDto(item.getItemUuid(), item.getItemName(), item.getItemDescription(), item.getItemInStock());
+        return new ItemDto(item.getItemUuid(), item.getItemName(), item.getItemDescription(), item.getItemPrice(), item.getItemInStock());
     }
 }

@@ -9,12 +9,14 @@ public class Item {
     private final UUID itemUuid;
     private String itemName;
     private String itemDescription;
+    private double itemPrice;
     private int itemInStock;
 
-    public Item(String itemName, String itemDescription, int itemInStock) {
+    public Item(String itemName, String itemDescription, double itemPrice, int itemInStock) {
         this.itemUuid = UUID.randomUUID();
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+        this.itemPrice = itemPrice;
         this.itemInStock = itemInStock;
     }
 
@@ -23,12 +25,12 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return itemInStock == item.itemInStock && Objects.equals(itemUuid, item.itemUuid) && Objects.equals(itemName, item.itemName) && Objects.equals(itemDescription, item.itemDescription);
+        return Double.compare(item.itemPrice, itemPrice) == 0 && itemInStock == item.itemInStock && Objects.equals(itemUuid, item.itemUuid) && Objects.equals(itemName, item.itemName) && Objects.equals(itemDescription, item.itemDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(itemUuid, itemName, itemDescription, itemInStock);
+        return Objects.hash(itemUuid, itemName, itemDescription, itemPrice, itemInStock);
     }
 
     public UUID getItemUuid() {
@@ -45,5 +47,9 @@ public class Item {
 
     public int getItemInStock() {
         return itemInStock;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
     }
 }

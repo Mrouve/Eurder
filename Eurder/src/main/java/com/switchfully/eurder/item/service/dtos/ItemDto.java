@@ -6,12 +6,14 @@ public class ItemDto {
     private final UUID itemUuid;
     private String itemName;
     private String itemDescription;
+    private double itemPrice;
     private int itemInStock;
 
-    public ItemDto(UUID itemUuid, String itemName, String itemDescription, int itemInStock) {
+    public ItemDto(UUID itemUuid, String itemName, String itemDescription, double itemPrice, int itemInStock) {
         this.itemUuid = itemUuid;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+        this.itemPrice = itemPrice;
         this.itemInStock = itemInStock;
     }
 
@@ -29,5 +31,9 @@ public class ItemDto {
 
     public int getItemInStock() {
         return itemInStock;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
     }
 }
