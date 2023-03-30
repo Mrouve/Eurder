@@ -29,7 +29,7 @@ public class CustomerController {
 
 
     //GET===============================================================================================================
-    @GetMapping(produces = "application/json")
+    @GetMapping(path="", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerDto> getAllCustomers(@RequestHeader String userId){
         return customerService.getAllCustomers(userId);
