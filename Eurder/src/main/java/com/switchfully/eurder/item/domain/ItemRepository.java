@@ -18,4 +18,7 @@ public class ItemRepository {
         return item;
     }
 
+    public ConcurrentHashMap<UUID, Item> getItemsByUuid() {
+        return itemsByUuid;
+    }
 }

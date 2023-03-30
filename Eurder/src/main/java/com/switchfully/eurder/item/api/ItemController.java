@@ -1,7 +1,5 @@
 package com.switchfully.eurder.item.api;
 
-import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dtos.CustomerDto;
 import com.switchfully.eurder.item.service.ItemService;
 import com.switchfully.eurder.item.service.dtos.CreateItemDto;
 import com.switchfully.eurder.item.service.dtos.ItemDto;
@@ -21,8 +19,8 @@ public class ItemController {
     //POST=============================================================================================================
     @PostMapping(path="", consumes = "application/json", produces="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestBody CreateItemDto createItemDto){
-        return itemService.saveItem(createItemDto);
+    public ItemDto create(@RequestBody CreateItemDto createItemDto, @RequestHeader String userId){
+        return itemService.saveItem(createItemDto, userId);
     }
 
 

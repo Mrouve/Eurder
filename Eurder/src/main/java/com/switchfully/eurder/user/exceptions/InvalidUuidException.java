@@ -1,4 +1,4 @@
-package com.switchfully.eurder.customer.exceptions;
+package com.switchfully.eurder.user.exceptions;
 
 public class InvalidUuidException extends RuntimeException {
     public InvalidUuidException(){

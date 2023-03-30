@@ -1,35 +1,39 @@
-package com.switchfully.eurder.customer.service;
+package com.switchfully.eurder.user.service;
 
-import com.switchfully.eurder.customer.domain.Address;
-import com.switchfully.eurder.customer.domain.Customer;
-import com.switchfully.eurder.customer.domain.CustomerRepository;
-import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dtos.CustomerDto;
-import com.switchfully.eurder.customer.service.mappers.CustomerMapper;
+import com.switchfully.eurder.user.domain.Address;
+import com.switchfully.eurder.user.domain.Admin;
+import com.switchfully.eurder.user.domain.Customer;
+import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.user.service.dtos.CustomerDto;
+import com.switchfully.eurder.user.service.mappers.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerServiceTest {
-    private CustomerRepository customerRepository ;
+    private UserRepository userRepository;
     private CustomerMapper customerMapper;
     private CustomerService customerService;
     private Customer customer1;
     private Customer customer2;
+    private Admin admin1;
     private CreateCustomerDto createCustomerDto;
     private static final int SIZE_SETUP = 2;
 
 
     @BeforeEach
     void setup(){
-        customerRepository = new CustomerRepository();
+        userRepository = new UserRepository();
         customerMapper = new CustomerMapper();
-        customerService = new CustomerService(customerRepository,customerMapper);
+        customerService = new CustomerService(userRepository,customerMapper);
         customer1 = new Customer.CustomerBuilder()
                 .withFirstname("fn1")
                 .withLastname("ln1")
@@ -44,8 +48,10 @@ class CustomerServiceTest {
                 .withAddress(new Address("street2", "streetNber2", "postalCode2", "city2", "country2"))
                 .withPhoneNumber(22222222222222L)
                 .build();
-        customerRepository.save(customer1);
-        customerRepository.save(customer2);
+        admin1 = new Admin("admin1", LocalDate.of(2023,1,1));
+        userRepository.save(customer1);
+        userRepository.save(customer2);
+        userRepository.save(admin1);
 
         createCustomerDto = new CreateCustomerDto("fndto1", "lndto1", "email@fdsf.fr",
                 new Address("zaea","ezae","azeaz","ezae","azeae"),
@@ -53,7 +59,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void save_givenAValidCreateCustomerDto_thenShouldBeReturnedAValidCustomerDto_CaseUserIsAdmin() {
+    void save_givenAValidCreateCustomerDto_thenShouldBeReturnedAValidCustomerDto() {
         //Given
         CustomerDto customerToSaveDto = customerService.save(createCustomerDto);
 
@@ -67,14 +73,9 @@ class CustomerServiceTest {
     }
 
     @Test
-    void save_givenAValidCreateCustomerDto_thenShouldThrowUnauthorizedEndPointException_CaseUserIsNotAdmin() {
-
-    }
-
-    @Test
     void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldReturnADtoOfAllCustomers_CaseUserIsAdmin() {
         //Given
-        List<CustomerDto> getAllCustomersResult = customerService.getAllCustomers();
+        List<CustomerDto> getAllCustomersResult = customerService.getAllCustomers(admin1.getUuid().toString());
 
         //Then
         assertEquals(SIZE_SETUP, getAllCustomersResult.size());
@@ -84,7 +85,24 @@ class CustomerServiceTest {
 
     @Test
     void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldThrowUnauthorizedEndPointException_CaseUserIsNotAdmin() {
+        //Given
+        UUID notAdminUuid = customer1.getUuid();
 
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getAllCustomers(notAdminUuid.toString()))
+                .withMessage("Unauthorized End Point !");
+    }
+
+    @Test
+    void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldThrowUnauthorizedEndPointException_CaseUserIdIsNotAValidUserId() {
+        //Given
+        String badUuid = "fsdfsdf";
+
+        //Then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> customerService.getAllCustomers(badUuid))
+                .withMessage("Invalid UUID string: " + badUuid);
     }
 
     @Test
@@ -93,7 +111,7 @@ class CustomerServiceTest {
         UUID existingUUID = customer1.getUuid();
 
         //When
-        CustomerDto desiredCustomerDto = customerService.getOneCustomerByUuid(existingUUID);
+        CustomerDto desiredCustomerDto = customerService.getOneCustomerByUuid(existingUUID.toString(), admin1.getUuid().toString());
 
         //Then
         assertEquals(customer1.getFirstname(), desiredCustomerDto.getFirstname());
@@ -104,17 +122,38 @@ class CustomerServiceTest {
     }
 
     @Test
+    void getOneCustomerByUuid_GivenAValidUUID_thenShouldReturnADtoOfTheCorrespondingCustomer_CaseUserIsNotAdmin() {
+        //Given
+        UUID notAdminUuid = customer1.getUuid();
+        UUID existingUUID = customer1.getUuid();
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(existingUUID.toString(), notAdminUuid.toString()))
+                .withMessage("Unauthorized End Point !");
+    }
+
+    @Test
     void getOneCustomerByUuid_GivenAnInvalidUUID_thenShouldReturnADtoOfTheCorrespondingCustomer_CaseUserIsAdmin() {
         //Given
         UUID randomUUID = UUID.randomUUID();
 
         //Then
         assertThatRuntimeException()
-                .isThrownBy(() -> customerService.getOneCustomerByUuid(randomUUID))
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(randomUUID.toString(), admin1.getUuid().toString()))
                 .withMessage("This Unique Id does not exists");
     }
 
     @Test
-    void checkIfAdmin() {
+    void getOneCustomerByUuid_GivenANonExistingUserId_ShouldReturnInvalidUuidException() {
+        //Given
+        UUID existingUUID = customer1.getUuid();
+        UUID randomUUID = UUID.randomUUID();
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(existingUUID.toString(), randomUUID.toString()))
+                .withMessage("This Unique Id does not exists");
     }
+
 }

@@ -1,8 +1,8 @@
-package com.switchfully.eurder.customer.api;
+package com.switchfully.eurder.user.api;
 
-import com.switchfully.eurder.customer.service.CustomerService;
-import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dtos.CustomerDto;
+import com.switchfully.eurder.user.service.CustomerService;
+import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.user.service.dtos.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +29,16 @@ public class CustomerController {
 
 
     //GET===============================================================================================================
-    @GetMapping(produces = "application/json")
+    @GetMapping(path="", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDto> getAllCustomers(){
-        return customerService.getAllCustomers();
+    public List<CustomerDto> getAllCustomers(@RequestHeader String userId){
+        return customerService.getAllCustomers(userId);
     }
 
     @GetMapping(path= "customer/{uuid}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto getOneCustomerByUuid(@PathVariable UUID uuid){
-        return customerService.getOneCustomerByUuid(uuid);
+    public CustomerDto getOneCustomerByUuid(@PathVariable String uuid, @RequestHeader String userId){
+        return customerService.getOneCustomerByUuid(uuid, userId);
     }
 
 
