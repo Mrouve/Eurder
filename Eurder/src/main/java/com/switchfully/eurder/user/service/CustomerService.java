@@ -32,6 +32,7 @@ public class CustomerService {
     }
 
     public List<CustomerDto> getAllCustomers(String userId){
+        checkIfValidUuidFormat(userId);
         checkIfAdmin(userId);
         List<Customer> listOfCustomers = userRepository
                 .getAllUsers()
@@ -44,6 +45,7 @@ public class CustomerService {
     }
 
     public CustomerDto getOneCustomerByUuid(String uuid, String userId){
+        checkIfValidUuidFormat(userId);
         checkIfAdmin(userId);
         Customer customerToGet = (Customer) userRepository.getOneCustomerByUuid(UUID.fromString(uuid));
         if(customerToGet == null){
@@ -55,6 +57,13 @@ public class CustomerService {
     public void checkIfAdmin(String userId){
         if(userRepository.getUserRole(UUID.fromString(userId)) != Role.ADMIN){
             throw new UnauthorizedEndPointException();
+        }
+    }
+
+    public void checkIfValidUuidFormat(String userId){
+        try{UUID.fromString(userId);
+        }catch(IllegalArgumentException iae){
+            iae.getMessage();
         }
     }
 }
