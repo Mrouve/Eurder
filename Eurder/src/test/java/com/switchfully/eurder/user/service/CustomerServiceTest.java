@@ -1,6 +1,7 @@
 package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.domain.Address;
+import com.switchfully.eurder.user.domain.Admin;
 import com.switchfully.eurder.user.domain.Customer;
 import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
@@ -9,6 +10,7 @@ import com.switchfully.eurder.user.service.mappers.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ class CustomerServiceTest {
     private CustomerService customerService;
     private Customer customer1;
     private Customer customer2;
+    private Admin admin1;
     private CreateCustomerDto createCustomerDto;
     private static final int SIZE_SETUP = 2;
 
@@ -44,8 +47,10 @@ class CustomerServiceTest {
                 .withAddress(new Address("street2", "streetNber2", "postalCode2", "city2", "country2"))
                 .withPhoneNumber(22222222222222L)
                 .build();
+        admin1 = new Admin("admin1", LocalDate.of(2023,1,1));
         userRepository.save(customer1);
         userRepository.save(customer2);
+        userRepository.save(admin1);
 
         createCustomerDto = new CreateCustomerDto("fndto1", "lndto1", "email@fdsf.fr",
                 new Address("zaea","ezae","azeaz","ezae","azeae"),
@@ -53,7 +58,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void save_givenAValidCreateCustomerDto_thenShouldBeReturnedAValidCustomerDto_CaseUserIsAdmin() {
+    void save_givenAValidCreateCustomerDto_thenShouldBeReturnedAValidCustomerDto() {
         //Given
         CustomerDto customerToSaveDto = customerService.save(createCustomerDto);
 
@@ -67,14 +72,9 @@ class CustomerServiceTest {
     }
 
     @Test
-    void save_givenAValidCreateCustomerDto_thenShouldThrowUnauthorizedEndPointException_CaseUserIsNotAdmin() {
-
-    }
-
-    @Test
     void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldReturnADtoOfAllCustomers_CaseUserIsAdmin() {
         //Given
-        List<CustomerDto> getAllCustomersResult = customerService.getAllCustomers();
+        List<CustomerDto> getAllCustomersResult = customerService.getAllCustomers(admin1.getUuid().toString());
 
         //Then
         assertEquals(SIZE_SETUP, getAllCustomersResult.size());
@@ -93,7 +93,7 @@ class CustomerServiceTest {
         UUID existingUUID = customer1.getUuid();
 
         //When
-        CustomerDto desiredCustomerDto = customerService.getOneCustomerByUuid(existingUUID);
+        CustomerDto desiredCustomerDto = customerService.getOneCustomerByUuid(existingUUID.toString(), admin1.getUuid().toString());
 
         //Then
         assertEquals(customer1.getFirstname(), desiredCustomerDto.getFirstname());
@@ -110,7 +110,7 @@ class CustomerServiceTest {
 
         //Then
         assertThatRuntimeException()
-                .isThrownBy(() -> customerService.getOneCustomerByUuid(randomUUID))
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(randomUUID.toString(), admin1.getUuid().toString()))
                 .withMessage("This Unique Id does not exists");
     }
 

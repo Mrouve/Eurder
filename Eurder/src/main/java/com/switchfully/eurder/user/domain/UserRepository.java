@@ -17,9 +17,9 @@ public class UserRepository {
         this.usersByUUID = new ConcurrentHashMap<>();
     }
 
-    public Customer save(Customer customer){
-        usersByUUID.put(customer.getUuid(), customer);
-        return customer;
+    public User save(User user){
+        usersByUUID.put(user.getUuid(), user);
+        return user;
     }
 
     public Collection<User> getAllUsers(){
@@ -27,12 +27,30 @@ public class UserRepository {
                 .values());
     }
 
+    public User getOneUserByUuid(UUID uuid){
+//        if(usersByUUID.get(uuid) != null){
+//            return usersByUUID.get(uuid);
+//        }
+//        return null;
+        return usersByUUID.get(uuid);
+    }
+
+    public Role getUserRole(UUID uuid){
+        return getOneUserByUuid(uuid).getRole();
+    }
 
     public User getOneCustomerByUuid(UUID uuid){
-//        return usersByUUID.get(uuid);
-        if(usersByUUID.get(uuid) instanceof Customer){
+        User desiredUser = getOneUserByUuid(uuid);
+        if(desiredUser instanceof Customer){
             return usersByUUID.get(uuid);
         }
         return null;
     }
+
+//    public User getOneCustomerByUuid(UUID uuid){
+//        if(usersByUUID.get(uuid) instanceof Customer){
+//            return usersByUUID.get(uuid);
+//        }
+//        return null;
+//    }
 }

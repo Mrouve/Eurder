@@ -41,7 +41,7 @@ class UserRepositoryTest {
         Customer customerToSave = customer;
 
         //When
-        Customer savedCustomer = userRepository.save(customerToSave);
+        User savedCustomer = userRepository.save(customerToSave);
 
         //Then
         assertTrue(userRepository.getAllUsers().contains(savedCustomer));

@@ -1,9 +1,11 @@
 package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.domain.Customer;
+import com.switchfully.eurder.user.domain.Role;
 import com.switchfully.eurder.user.domain.User;
 import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.exceptions.InvalidUuidException;
+import com.switchfully.eurder.user.exceptions.UnauthorizedEndPointException;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.user.service.dtos.CustomerDto;
 import com.switchfully.eurder.user.service.mappers.CustomerMapper;
@@ -25,12 +27,12 @@ public class CustomerService {
 
     public CustomerDto save(CreateCustomerDto createCustomerDto){
         Customer newCustomer = customerMapper.fromDto(createCustomerDto);
-        Customer customerToCreateInRepository = userRepository.save(newCustomer);
-        return customerMapper.toDto(customerToCreateInRepository);
+        User customerToCreateInRepository = userRepository.save(newCustomer);
+        return customerMapper.toDto((Customer)customerToCreateInRepository);
     }
 
-    public List<CustomerDto> getAllCustomers(){
-        checkIfAdmin();
+    public List<CustomerDto> getAllCustomers(String userId){
+        checkIfAdmin(userId);
         List<Customer> listOfCustomers = userRepository
                 .getAllUsers()
                 .stream()
@@ -41,17 +43,18 @@ public class CustomerService {
         return customerMapper.toDtoList(listOfCustomers);
     }
 
-    public CustomerDto getOneCustomerByUuid(UUID uuid){
-        checkIfAdmin();
-        Customer customerToGet = (Customer) userRepository.getOneCustomerByUuid(uuid);
+    public CustomerDto getOneCustomerByUuid(String uuid, String userId){
+        checkIfAdmin(userId);
+        Customer customerToGet = (Customer) userRepository.getOneCustomerByUuid(UUID.fromString(uuid));
         if(customerToGet == null){
             throw new InvalidUuidException();
         }
         return customerMapper.toDto(customerToGet);
     }
 
-    public void checkIfAdmin(){
-        //TO DO
-        // throw new UnauthorizedEndPointException();
+    public void checkIfAdmin(String userId){
+        if(userRepository.getUserRole(UUID.fromString(userId)) != Role.ADMIN){
+            throw new UnauthorizedEndPointException();
+        }
     }
 }

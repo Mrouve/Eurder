@@ -31,14 +31,14 @@ public class CustomerController {
     //GET===============================================================================================================
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDto> getAllCustomers(){
-        return customerService.getAllCustomers();
+    public List<CustomerDto> getAllCustomers(@RequestHeader String userId){
+        return customerService.getAllCustomers(userId);
     }
 
     @GetMapping(path= "customer/{uuid}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto getOneCustomerByUuid(@PathVariable UUID uuid){
-        return customerService.getOneCustomerByUuid(uuid);
+    public CustomerDto getOneCustomerByUuid(@PathVariable String uuid, @RequestHeader String userId){
+        return customerService.getOneCustomerByUuid(uuid, userId);
     }
 
 
