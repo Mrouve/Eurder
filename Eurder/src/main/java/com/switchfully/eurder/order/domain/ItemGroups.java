@@ -7,12 +7,14 @@ public class ItemGroups {
     private UUID itemId;
     private int quantity;
     private double priceAtTimeOfOrder;
-    private LocalDate shipmentDate;
+    //private LocalDate shipmentDate;
 
-    public ItemGroups(UUID itemId, int quantity, double priceAtTimeOfOrder, LocalDate shipmentDate) {
+    public ItemGroups(UUID itemId, int quantity, double priceAtTimeOfOrder) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.priceAtTimeOfOrder = priceAtTimeOfOrder;
-        this.shipmentDate = shipmentDate;
+        //this.shipmentDate = defineShipmentDate();
     }
+
+
 }

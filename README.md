@@ -49,3 +49,4 @@ Commit messages :
 [REM] for removing of resources
 [MOV] for moving files (Do not change content of moved file, otherwise Git will loose track, and the history will be lost !), or simply moving code from a file to another one.
 [MERGE] for merge commits (only for forward/back-port)
+

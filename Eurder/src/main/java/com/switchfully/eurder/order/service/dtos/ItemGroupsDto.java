@@ -15,4 +15,20 @@ public class ItemGroupsDto {
         this.priceAtTimeOfOrder = priceAtTimeOfOrder;
         this.shipmentDate = shipmentDate;
     }
+
+    public UUID getItemId() {
+        return itemId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public double getPriceAtTimeOfOrder() {
+        return priceAtTimeOfOrder;
+    }
+
+    public LocalDate getShipmentDate() {
+        return shipmentDate;
+    }
 }
