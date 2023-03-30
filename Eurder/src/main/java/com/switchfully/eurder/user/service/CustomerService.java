@@ -46,17 +46,22 @@ public class CustomerService {
 
     public CustomerDto getOneCustomerByUuid(String uuid, String userId){
         checkIfValidUuidFormat(userId);
+        checkIfUuidExists(userId);
         checkIfAdmin(userId);
+        checkIfUuidExists(uuid);
         Customer customerToGet = (Customer) userRepository.getOneCustomerByUuid(UUID.fromString(uuid));
-        if(customerToGet == null){
-            throw new InvalidUuidException();
-        }
         return customerMapper.toDto(customerToGet);
     }
 
     public void checkIfAdmin(String userId){
         if(userRepository.getUserRole(UUID.fromString(userId)) != Role.ADMIN){
             throw new UnauthorizedEndPointException();
+        }
+    }
+
+    public void checkIfUuidExists(String userId){
+        if(userRepository.getOneUserByUuid(UUID.fromString(userId))==null){
+            throw new InvalidUuidException();
         }
     }
 

@@ -123,6 +123,7 @@ class CustomerServiceTest {
 
     @Test
     void getOneCustomerByUuid_GivenAValidUUID_thenShouldReturnADtoOfTheCorrespondingCustomer_CaseUserIsNotAdmin() {
+        //Given
         UUID notAdminUuid = customer1.getUuid();
         UUID existingUUID = customer1.getUuid();
 
@@ -140,6 +141,18 @@ class CustomerServiceTest {
         //Then
         assertThatRuntimeException()
                 .isThrownBy(() -> customerService.getOneCustomerByUuid(randomUUID.toString(), admin1.getUuid().toString()))
+                .withMessage("This Unique Id does not exists");
+    }
+
+    @Test
+    void getOneCustomerByUuid_GivenANonExistingUserId_ShouldReturnInvalidUuidException() {
+        //Given
+        UUID existingUUID = customer1.getUuid();
+        UUID randomUUID = UUID.randomUUID();
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(existingUUID.toString(), randomUUID.toString()))
                 .withMessage("This Unique Id does not exists");
     }
 
