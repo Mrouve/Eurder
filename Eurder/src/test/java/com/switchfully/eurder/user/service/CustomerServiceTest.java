@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,7 +85,24 @@ class CustomerServiceTest {
 
     @Test
     void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldThrowUnauthorizedEndPointException_CaseUserIsNotAdmin() {
+        //Given
+        UUID notAdminUuid = customer1.getUuid();
 
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getAllCustomers(notAdminUuid.toString()))
+                .withMessage("Unauthorized End Point !");
+    }
+
+    @Test
+    void getAllCustomers_givenANonNullRepositoryOfCustomers_thenShouldThrowUnauthorizedEndPointException_CaseUserIdIsNotAValidUserId() {
+        //Given
+        String badUuid = "fsdfsdf";
+
+        //Then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> customerService.getAllCustomers(badUuid))
+                .withMessage("Invalid UUID string: " + badUuid);
     }
 
     @Test
@@ -104,6 +122,17 @@ class CustomerServiceTest {
     }
 
     @Test
+    void getOneCustomerByUuid_GivenAValidUUID_thenShouldReturnADtoOfTheCorrespondingCustomer_CaseUserIsNotAdmin() {
+        UUID notAdminUuid = customer1.getUuid();
+        UUID existingUUID = customer1.getUuid();
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.getOneCustomerByUuid(existingUUID.toString(), notAdminUuid.toString()))
+                .withMessage("Unauthorized End Point !");
+    }
+
+    @Test
     void getOneCustomerByUuid_GivenAnInvalidUUID_thenShouldReturnADtoOfTheCorrespondingCustomer_CaseUserIsAdmin() {
         //Given
         UUID randomUUID = UUID.randomUUID();
@@ -114,7 +143,4 @@ class CustomerServiceTest {
                 .withMessage("This Unique Id does not exists");
     }
 
-    @Test
-    void checkIfAdmin() {
-    }
 }
