@@ -1,6 +1,5 @@
 package com.switchfully.eurder.item.domain;
 
-import com.switchfully.eurder.customer.domain.Customer;
 import com.switchfully.eurder.item.service.ItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,11 +1,5 @@
 package com.switchfully.eurder.item.service;
 
-import com.switchfully.eurder.customer.domain.Customer;
-import com.switchfully.eurder.customer.domain.CustomerRepository;
-import com.switchfully.eurder.customer.service.CustomerService;
-import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dtos.CustomerDto;
-import com.switchfully.eurder.customer.service.mappers.CustomerMapper;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
 import com.switchfully.eurder.item.service.dtos.CreateItemDto;
