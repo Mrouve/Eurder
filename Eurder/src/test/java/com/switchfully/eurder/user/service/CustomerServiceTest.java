@@ -2,7 +2,7 @@ package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.domain.Address;
 import com.switchfully.eurder.user.domain.Customer;
-import com.switchfully.eurder.user.domain.CustomerRepository;
+import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.user.service.dtos.CustomerDto;
 import com.switchfully.eurder.user.service.mappers.CustomerMapper;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerServiceTest {
-    private CustomerRepository customerRepository ;
+    private UserRepository userRepository;
     private CustomerMapper customerMapper;
     private CustomerService customerService;
     private Customer customer1;
@@ -27,9 +27,9 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setup(){
-        customerRepository = new CustomerRepository();
+        userRepository = new UserRepository();
         customerMapper = new CustomerMapper();
-        customerService = new CustomerService(customerRepository,customerMapper);
+        customerService = new CustomerService(userRepository,customerMapper);
         customer1 = new Customer.CustomerBuilder()
                 .withFirstname("fn1")
                 .withLastname("ln1")
@@ -44,8 +44,8 @@ class CustomerServiceTest {
                 .withAddress(new Address("street2", "streetNber2", "postalCode2", "city2", "country2"))
                 .withPhoneNumber(22222222222222L)
                 .build();
-        customerRepository.save(customer1);
-        customerRepository.save(customer2);
+        userRepository.save(customer1);
+        userRepository.save(customer2);
 
         createCustomerDto = new CreateCustomerDto("fndto1", "lndto1", "email@fdsf.fr",
                 new Address("zaea","ezae","azeaz","ezae","azeae"),

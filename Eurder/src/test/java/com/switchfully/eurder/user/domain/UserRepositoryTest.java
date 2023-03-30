@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerRepositoryTest {
+class UserRepositoryTest {
 
-    private CustomerRepository customerRepository = new CustomerRepository();
+    private UserRepository userRepository = new UserRepository();
     private Customer customer;
 
     private static final int SIZE_SETUP = 2;
@@ -24,7 +24,7 @@ class CustomerRepositoryTest {
 
     @BeforeEach
     void setup(){
-        customerRepository = new CustomerRepository();
+        userRepository = new UserRepository();
         customer = new Customer.CustomerBuilder()
                 .withFirstname("fn1")
                 .withLastname("ln1")
@@ -32,7 +32,7 @@ class CustomerRepositoryTest {
                 .withAddress(new Address("street1", "streetNber1", "postalCode1", "city1", "country1"))
                 .withPhoneNumber(123456789L)
                 .build();
-        customerRepository.save(customer);
+        userRepository.save(customer);
     }
 
     @Test
@@ -41,10 +41,10 @@ class CustomerRepositoryTest {
         Customer customerToSave = customer;
 
         //When
-        Customer savedCustomer = customerRepository.save(customerToSave);
+        Customer savedCustomer = userRepository.save(customerToSave);
 
         //Then
-        assertTrue(customerRepository.getAllCustomers().contains(savedCustomer));
+        assertTrue(userRepository.getAllUsers().contains(savedCustomer));
     }
 
     @Test
@@ -57,10 +57,10 @@ class CustomerRepositoryTest {
                 .withAddress(new Address("street2", "streetNber2", "postalCode2", "city2", "country2"))
                 .withPhoneNumber(22222222222222L)
                 .build();
-        customerRepository.save(customer2);
+        userRepository.save(customer2);
 
         //When
-        Collection<Customer> allCustomers = customerRepository.getAllCustomers();
+        Collection<User> allCustomers = userRepository.getAllUsers();
 
         //Then
         assertTrue(((allCustomers.contains(customer2)) && (allCustomers.contains(customer))));
@@ -73,7 +73,7 @@ class CustomerRepositoryTest {
         UUID randomUUID = customer.getUuid();
 
         //Then
-        assertEquals(customer, customerRepository.getOneCustomerByUuid(randomUUID));
+        assertEquals(customer, userRepository.getOneCustomerByUuid(randomUUID));
     }
 
     @Test
@@ -82,6 +82,6 @@ class CustomerRepositoryTest {
         UUID randomUUID = UUID.randomUUID();
 
         //Then
-        assertThat(customerRepository.getOneCustomerByUuid(randomUUID)).isNull();
+        assertThat(userRepository.getOneCustomerByUuid(randomUUID)).isNull();
     }
 }
