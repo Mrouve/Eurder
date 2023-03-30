@@ -1,4 +1,4 @@
-package com.switchfully.eurder.customer.exceptions;
+package com.switchfully.eurder.user.exceptions;
 
 public class UnauthorizedEndPointException extends RuntimeException {
     public UnauthorizedEndPointException(){

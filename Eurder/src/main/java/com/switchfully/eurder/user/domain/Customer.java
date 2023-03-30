@@ -1,27 +1,29 @@
-package com.switchfully.eurder.customer.domain;
+package com.switchfully.eurder.user.domain;
 
-import com.switchfully.eurder.customer.exceptions.IncompleteAddressException;
-import com.switchfully.eurder.customer.exceptions.InvalidCustomerFieldFormatException;
-import com.switchfully.eurder.customer.exceptions.InvalidEmailFormatException;
+import com.switchfully.eurder.user.exceptions.IncompleteAddressException;
+import com.switchfully.eurder.user.exceptions.InvalidCustomerFieldFormatException;
+import com.switchfully.eurder.user.exceptions.InvalidEmailFormatException;
 
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Customer {
+public class Customer extends User{
     //Vars
-    private final UUID uuid;
+    //private final UUID uuid;
     private String firstname;
     private String lastname;
     private String email;
     private Address address;
     private Long phoneNumber;
+    private Role role;
 
     //Constructors
 
     public Customer(String firstname, String lastname, String email, Address address, Long phoneNumber) {
-        this.uuid = UUID.randomUUID();
+        //this.uuid = UUID.randomUUID();
+        super();
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -35,12 +37,17 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(uuid, customer.uuid) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
+        //return Objects.equals(uuid, customer.uuid) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
+        return Objects.equals(super.getUuid(), super.getUuid()) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
+
     }
 
     @Override
+//    public int hashCode() {
+//        return Objects.hash(uuid, firstname, lastname, email, address, phoneNumber);
+//    }
     public int hashCode() {
-        return Objects.hash(uuid, firstname, lastname, email, address, phoneNumber);
+        return Objects.hash(super.getUuid(), firstname, lastname, email, address, phoneNumber);
     }
 
     //==================================================================================================================
@@ -100,9 +107,9 @@ public class Customer {
     }
     //==================================================================================================================
     // Getters
-    public UUID getUuid() {
-        return uuid;
-    }
+//    public UUID getUuid() {
+//        return uuid;
+//    }
 
     public String getFirstname() {
         return firstname;

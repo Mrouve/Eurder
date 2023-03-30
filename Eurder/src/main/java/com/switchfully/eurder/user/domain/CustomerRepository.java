@@ -1,4 +1,4 @@
-package com.switchfully.eurder.customer.domain;
+package com.switchfully.eurder.user.domain;
 
 import org.springframework.stereotype.Repository;
 

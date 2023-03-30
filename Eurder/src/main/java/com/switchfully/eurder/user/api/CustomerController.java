@@ -1,8 +1,8 @@
-package com.switchfully.eurder.customer.api;
+package com.switchfully.eurder.user.api;
 
-import com.switchfully.eurder.customer.service.CustomerService;
-import com.switchfully.eurder.customer.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dtos.CustomerDto;
+import com.switchfully.eurder.user.service.CustomerService;
+import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.user.service.dtos.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

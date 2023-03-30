@@ -1,6 +1,6 @@
-package com.switchfully.eurder.customer.domain;
+package com.switchfully.eurder.user.domain;
 
-import com.switchfully.eurder.customer.service.CustomerService;
+import com.switchfully.eurder.user.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

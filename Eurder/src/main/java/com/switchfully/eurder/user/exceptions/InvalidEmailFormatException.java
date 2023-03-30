@@ -1,4 +1,4 @@
-package com.switchfully.eurder.customer.exceptions;
+package com.switchfully.eurder.user.exceptions;
 
 public class InvalidEmailFormatException extends RuntimeException {
     public InvalidEmailFormatException(String email){

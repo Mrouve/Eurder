@@ -1,11 +1,11 @@
-package com.switchfully.eurder.customer.service.dtos;
+package com.switchfully.eurder.user.service.dtos;
 
-import com.switchfully.eurder.customer.domain.Address;
+import com.switchfully.eurder.user.domain.Address;
 
 import java.util.UUID;
 
-public class CreateCustomerDto {
-    //Vars
+public class CustomerDto {
+    private UUID uuid;
     private String firstname;
     private String lastname;
     private String email;
@@ -14,7 +14,8 @@ public class CreateCustomerDto {
 
     //Constructors
 
-    public CreateCustomerDto(String firstname, String lastname, String email, Address address, Long phoneNumber) {
+    public CustomerDto(UUID uuid, String firstname, String lastname, String email, Address address, Long phoneNumber) {
+        this.uuid = uuid;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -22,7 +23,12 @@ public class CreateCustomerDto {
         this.phoneNumber = phoneNumber;
     }
 
-    //Methods
+    // Methods
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
     public String getFirstname() {
         return firstname;
     }
