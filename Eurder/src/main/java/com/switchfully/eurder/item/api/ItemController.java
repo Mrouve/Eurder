@@ -19,8 +19,8 @@ public class ItemController {
     //POST=============================================================================================================
     @PostMapping(path="", consumes = "application/json", produces="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestBody CreateItemDto createItemDto){
-        return itemService.saveItem(createItemDto);
+    public ItemDto create(@RequestBody CreateItemDto createItemDto, @RequestHeader String userId){
+        return itemService.saveItem(createItemDto, userId);
     }
 
 
