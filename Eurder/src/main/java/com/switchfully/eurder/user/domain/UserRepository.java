@@ -28,10 +28,6 @@ public class UserRepository {
     }
 
     public User getOneUserByUuid(UUID uuid){
-//        if(usersByUUID.get(uuid) != null){
-//            return usersByUUID.get(uuid);
-//        }
-//        return null;
         return usersByUUID.get(uuid);
     }
 
@@ -47,10 +43,4 @@ public class UserRepository {
         return null;
     }
 
-//    public User getOneCustomerByUuid(UUID uuid){
-//        if(usersByUUID.get(uuid) instanceof Customer){
-//            return usersByUUID.get(uuid);
-//        }
-//        return null;
-//    }
 }

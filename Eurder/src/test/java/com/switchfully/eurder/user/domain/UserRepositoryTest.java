@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -17,8 +18,9 @@ class UserRepositoryTest {
 
     private UserRepository userRepository = new UserRepository();
     private Customer customer;
+    private Admin admin;
 
-    private static final int SIZE_SETUP = 2;
+    private static final int SIZE_SETUP = 3;
     @Autowired
     private CustomerService customerService ;
 
@@ -32,7 +34,9 @@ class UserRepositoryTest {
                 .withAddress(new Address("street1", "streetNber1", "postalCode1", "city1", "country1"))
                 .withPhoneNumber(123456789L)
                 .build();
+        admin = new Admin("admin1", LocalDate.of(2023,1,1));
         userRepository.save(customer);
+        userRepository.save(admin);
     }
 
     @Test
@@ -45,6 +49,18 @@ class UserRepositoryTest {
 
         //Then
         assertTrue(userRepository.getAllUsers().contains(savedCustomer));
+    }
+
+    @Test
+    void save_givenAnAdminToSave_thenSavedAdminIsContainedInRepo() {
+        //Given
+        Admin adminToSave = admin;
+
+        //When
+        User savedAdmin = userRepository.save(adminToSave);
+
+        //Then
+        assertTrue(userRepository.getAllUsers().contains(savedAdmin));
     }
 
     @Test
@@ -63,7 +79,7 @@ class UserRepositoryTest {
         Collection<User> allCustomers = userRepository.getAllUsers();
 
         //Then
-        assertTrue(((allCustomers.contains(customer2)) && (allCustomers.contains(customer))));
+        assertTrue(((allCustomers.contains(customer2)) && (allCustomers.contains(customer)) && (allCustomers.contains(admin))));
         assertEquals(SIZE_SETUP, allCustomers.size());
     }
 
@@ -83,5 +99,14 @@ class UserRepositoryTest {
 
         //Then
         assertThat(userRepository.getOneCustomerByUuid(randomUUID)).isNull();
+    }
+
+    @Test
+    void getUserRole_givenAProvidedUserID_thenShouldReturnTheCorrespondingUserRole(){
+        //Given - users created at Setup
+
+        //Then
+        assertEquals(customer.getRole(), userRepository.getUserRole(customer.getUuid()));
+        assertEquals(admin.getRole(), userRepository.getUserRole(admin.getUuid()));
     }
 }
