@@ -17,7 +17,7 @@ public class Customer extends User{
     private String email;
     private Address address;
     private Long phoneNumber;
-    private Role role;
+    //private Role role;
 
     //Constructors
 

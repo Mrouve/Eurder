@@ -2,6 +2,7 @@ package com.switchfully.eurder.order.api;
 
 import com.switchfully.eurder.order.domain.Order;
 import com.switchfully.eurder.order.service.OrderService;
+import com.switchfully.eurder.order.service.dtos.OrderDto;
 import com.switchfully.eurder.order.service.dtos.UserInputOrderDto;
 import com.switchfully.eurder.user.service.CustomerService;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
@@ -25,7 +26,7 @@ public class OrderController {
     //POST==============================================================================================================
     @PostMapping(path="", consumes = "application/json", produces="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order create(@RequestBody List<UserInputOrderDto> userInputOrderDto){
-        return orderService.saveOrder(userInputOrderDto);
+    public OrderDto create(@RequestBody List<UserInputOrderDto> userInputOrderDto, @RequestHeader String userId){
+        return orderService.saveOrder(userInputOrderDto, userId);
     }
 }
