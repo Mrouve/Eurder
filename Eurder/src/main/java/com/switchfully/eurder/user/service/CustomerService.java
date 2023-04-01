@@ -1,9 +1,6 @@
 package com.switchfully.eurder.user.service;
 
-import com.switchfully.eurder.user.domain.Customer;
-import com.switchfully.eurder.user.domain.Role;
-import com.switchfully.eurder.user.domain.User;
-import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.domain.*;
 import com.switchfully.eurder.user.exceptions.InvalidUuidException;
 import com.switchfully.eurder.user.exceptions.UnauthorizedEndPointException;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
@@ -70,5 +67,18 @@ public class CustomerService {
         }catch(IllegalArgumentException iae){
             iae.getMessage();
         }
+    }
+
+
+    //TEMP - to delete after test phase
+    public List<Admin> getDefaultAdmin(){
+        List<Admin> defaultAdmin = userRepository
+                .getAllUsers()
+                .stream()
+                .filter(c -> c instanceof Admin)
+                .map(cc -> (Admin) cc)
+                .distinct()
+                .toList();
+        return defaultAdmin;
     }
 }

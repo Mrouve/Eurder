@@ -33,6 +33,8 @@ public class OrderService {
     }
 
     public OrderDto saveOrder(List<UserInputOrderDto> userInputOrderDto, String userId){
+        //Check if allowed (= customer)
+
         // go get the item info + edit stock ; return item dto
         List<ItemDto> orderedItems = fetchDesiredItems(userInputOrderDto);
 

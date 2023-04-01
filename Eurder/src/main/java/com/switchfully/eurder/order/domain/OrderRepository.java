@@ -17,4 +17,8 @@ public class OrderRepository {
         ordersByUuid.put(order.getOrderUuid(), order);
         return order;
     }
+
+    public ConcurrentHashMap<UUID, Order> getOrdersByUuid() {
+        return ordersByUuid;
+    }
 }

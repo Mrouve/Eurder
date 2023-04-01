@@ -46,7 +46,7 @@ public class OrderMapper {
 
     public Order createOrder(List<ItemGroups> orderItemGroups, String userId){
         double getTotalPrice = orderItemGroups.stream()
-                .mapToDouble(oig -> oig.getPriceAtTimeOfOrder())
+                .mapToDouble(oig -> oig.getPriceAtTimeOfOrder() * oig.getQuantity())
                 .sum();
 
         return new Order(

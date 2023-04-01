@@ -20,4 +20,24 @@ public class OrderDto {
         this.customerId = customerId;
         this.itemGroups = itemGroups;
     }
+
+    public UUID getOrderUuid() {
+        return orderUuid;
+    }
+
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public List<ItemGroups> getItemGroups() {
+        return itemGroups;
+    }
 }

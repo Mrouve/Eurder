@@ -31,12 +31,21 @@ public class ItemRepository {
 
         //For each, check if name correspond to an item
 
-        List<Item> orderedItems = itemsByUuid.values().stream()
-                .filter(i -> userInputOrderDto.stream()
-                        .anyMatch(ui -> ui.getItemName().equals(i.getItemName())))
-                .collect(Collectors.toList());
+        List<String> itemNamesInUserInput = userInputOrderDto.stream()
+                .map(UserInputOrderDto::getItemName)
+                        .toList();
 
-        return editStock(orderedItems, userInputOrderDto);
+        List<Item> orderedItems = itemsByUuid.values().stream()
+                .filter(ui -> itemNamesInUserInput.contains(ui.getItemName()))
+                        .collect(Collectors.toList());
+
+//        List<Item> orderedItems = itemsByUuid.values().stream()
+//                .filter(i -> userInputOrderDto.stream()
+//                        .anyMatch(ui -> ui.getItemName().equals(i.getItemName())))
+//                .collect(Collectors.toList());
+
+        editStock(orderedItems, userInputOrderDto);
+        return orderedItems;
     }
 
     public List<Item> editStock(List<Item> orderedItems, List<UserInputOrderDto> userInput) {
