@@ -48,4 +48,16 @@ public class CustomerDto {
     public Long getPhoneNumber() {
         return phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "uuid=" + uuid +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", address=" + address +
+                ", phoneNumber=" + phoneNumber +
+                '}';
+    }
 }
