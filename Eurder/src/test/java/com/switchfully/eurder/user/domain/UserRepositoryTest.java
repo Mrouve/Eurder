@@ -20,7 +20,7 @@ class UserRepositoryTest {
     private Customer customer;
     private Admin admin;
 
-    private static final int SIZE_SETUP = 3;
+    private static final int SIZE_SETUP = 4;
     @Autowired
     private CustomerService customerService ;
 

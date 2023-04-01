@@ -5,6 +5,8 @@ import com.switchfully.eurder.item.service.dtos.CreateItemDto;
 import com.switchfully.eurder.item.service.dtos.ItemDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ItemMapper {
     public Item fromDto(CreateItemDto createItemDto){
@@ -13,5 +15,12 @@ public class ItemMapper {
 
     public ItemDto toDto(Item item){
         return new ItemDto(item.getItemUuid(), item.getItemName(), item.getItemDescription(), item.getItemPrice(), item.getItemInStock());
+    }
+
+    public List<ItemDto> ListToDto(List<Item> listOfItems){
+        return listOfItems
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 }

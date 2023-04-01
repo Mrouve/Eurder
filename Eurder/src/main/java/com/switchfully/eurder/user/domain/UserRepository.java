@@ -2,6 +2,7 @@ package com.switchfully.eurder.user.domain;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -14,7 +15,12 @@ public class UserRepository {
     private final ConcurrentHashMap<UUID, User> usersByUUID;
 
     public UserRepository() {
+
         this.usersByUUID = new ConcurrentHashMap<>();
+
+        //TEMPORARY - for testing purposes
+        Admin defaultAdmin = new Admin("defaultAdmin", LocalDate.now());
+        usersByUUID.put(defaultAdmin.getUuid(), defaultAdmin);
     }
 
     public User save(User user){

@@ -1,5 +1,6 @@
 package com.switchfully.eurder.user.api;
 
+import com.switchfully.eurder.user.domain.Admin;
 import com.switchfully.eurder.user.service.CustomerService;
 import com.switchfully.eurder.user.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.user.service.dtos.CustomerDto;
@@ -41,5 +42,11 @@ public class CustomerController {
         return customerService.getOneCustomerByUuid(uuid, userId);
     }
 
+    //!!!TEMPORARY===================================================================================================!!!
+    @GetMapping(path="/getDefaultAdmin", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Admin> getDefaultAdmin(){
+        return customerService.getDefaultAdmin();
+    }
 
 }
