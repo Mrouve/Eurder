@@ -57,7 +57,7 @@ class OrderServiceTest {
 
         orderRepository = new OrderRepository();
         orderMapper = new OrderMapper();
-        orderService = new OrderService(orderRepository, orderMapper, itemRepository, itemMapper);
+        orderService = new OrderService(orderRepository, orderMapper, itemRepository, itemMapper, customerService);
 
         itemService = new ItemService(itemRepository,itemMapper,customerService,userRepository);
         createItemDto = new CreateItemDto("itemName1", "itemDescription1", 10.02, 4);
@@ -90,14 +90,12 @@ class OrderServiceTest {
         userInput.add(ui1);
         userInput.add(ui2);
 
-        UUID randomUUID = UUID.randomUUID();
-
         //When
-        OrderDto orderDto = orderService.saveOrder(userInput, randomUUID.toString());
+        OrderDto orderDto = orderService.saveOrder(userInput, customer1.getUuid().toString());
 
         //Then
         assertEquals(orderDto.getOrderDate(), LocalDate.now());
-        assertEquals(orderDto.getCustomerId(), randomUUID);
+        assertEquals(orderDto.getCustomerId(), customer1.getUuid());
         assertEquals(orderDto.getTotalPrice(), 30.0);
         assertEquals(orderDto.getItemGroups().get(0).getItemId(),item1.getItemUuid() );
     }

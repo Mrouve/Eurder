@@ -56,6 +56,12 @@ public class CustomerService {
         }
     }
 
+    public void checkIfCustomer(String userId){
+        if(userRepository.getUserRole(UUID.fromString(userId)) != Role.MEMBER){
+            throw new UnauthorizedEndPointException();
+        }
+    }
+
     public void checkIfUuidExists(String userId){
         if(userRepository.getOneUserByUuid(UUID.fromString(userId))==null){
             throw new InvalidUuidException();

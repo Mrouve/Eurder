@@ -10,6 +10,7 @@ import com.switchfully.eurder.order.service.dtos.OrderDto;
 import com.switchfully.eurder.order.service.dtos.UserInputOrderDto;
 import com.switchfully.eurder.order.service.mappers.OrderMapper;
 import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.service.CustomerService;
 import com.switchfully.eurder.user.service.mappers.CustomerMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,16 +25,22 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
+    private final CustomerService customerService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemRepository itemRepository, ItemMapper itemMapper) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemRepository itemRepository,
+                        ItemMapper itemMapper, CustomerService customerService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
+        this.customerService = customerService;
     }
 
     public OrderDto saveOrder(List<UserInputOrderDto> userInputOrderDto, String userId){
         //Check if allowed (= customer)
+        customerService.checkIfValidUuidFormat(userId);
+        customerService.checkIfUuidExists(userId);
+        customerService.checkIfCustomer(userId);
 
         // go get the item info + edit stock ; return item dto
         List<ItemDto> orderedItems = fetchDesiredItems(userInputOrderDto);
