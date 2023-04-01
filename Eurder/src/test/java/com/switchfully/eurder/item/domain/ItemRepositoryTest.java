@@ -86,4 +86,16 @@ class ItemRepositoryTest {
         assertEquals(item1.getItemInStock(), (item1OriginalStock - item1OrderedQuantity));
         assertEquals(item2.getItemInStock(), (item2OriginalStock - item2OrderedQuantity));
     }
+
+    @Test
+    void getAllItemsNames_GivenAListOfItems_thenIsReturnedAListOfTheirNames(){
+        //Given items as defined in setup
+        //When
+        List<String> returnedItemNames = itemRepository.getAllItemsNames();
+
+        //Then
+        assertTrue(returnedItemNames.contains("name1"));
+        assertTrue(returnedItemNames.contains("name2"));
+        assertEquals(returnedItemNames.size(), 2);
+    }
 }

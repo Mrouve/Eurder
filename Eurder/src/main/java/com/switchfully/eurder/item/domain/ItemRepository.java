@@ -68,4 +68,10 @@ public class ItemRepository {
         return orderedItems;
     }
 
+    public List<String> getAllItemsNames(){
+        return itemsByUuid.values().stream()
+                .map(i -> i.getItemName())
+                .collect(Collectors.toList());
+    }
+
 }

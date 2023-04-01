@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OrderServiceTest {
@@ -134,4 +135,36 @@ class OrderServiceTest {
         assertTrue(itemGroupsList.get(1).getPriceAtTimeOfOrder() == itemGroupsListMockup.get(1).getPriceAtTimeOfOrder());
         assertEquals(itemGroupsList.get(1).getShipmentDate(), itemGroupsListMockup.get(1).getShipmentDate());
     }
+
+    @Test
+    void checkIfItemsExists_givenAValidItemOrder_thenReturnsAStringMessage(){
+        //Given
+        List<UserInputOrderDto> userInput= new ArrayList<>();
+        UserInputOrderDto ui1 = new UserInputOrderDto("name1", 1);
+        UserInputOrderDto ui2 = new UserInputOrderDto("name2", 1);
+        userInput.add(ui1);
+        userInput.add(ui2);
+
+        //When
+        String stringNormallyReturnedIfAllItemsExist = orderService.checkIfItemExists(userInput);
+
+        //Then
+        assertEquals(stringNormallyReturnedIfAllItemsExist, "Item(s) Found");
+    }
+
+    @Test
+    void checkIfItemsExists_givenANonExistingItemName_thenThrowError(){
+        //Given
+        List<UserInputOrderDto> userInput= new ArrayList<>();
+        UserInputOrderDto ui1 = new UserInputOrderDto("name1", 1);
+        UserInputOrderDto ui2 = new UserInputOrderDto("nameBadName", 1);
+        userInput.add(ui1);
+        userInput.add(ui2);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> orderService.checkIfItemExists(userInput))
+                .withMessage("One or more desired items are not in the database");
+    }
+
 }

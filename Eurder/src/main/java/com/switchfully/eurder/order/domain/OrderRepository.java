@@ -3,6 +3,7 @@ package com.switchfully.eurder.order.domain;
 import com.switchfully.eurder.item.domain.Item;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,4 +22,5 @@ public class OrderRepository {
     public ConcurrentHashMap<UUID, Order> getOrdersByUuid() {
         return ordersByUuid;
     }
+
 }

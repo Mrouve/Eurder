@@ -6,10 +6,13 @@ import com.switchfully.eurder.item.service.mappers.ItemMapper;
 import com.switchfully.eurder.order.domain.ItemGroups;
 import com.switchfully.eurder.order.domain.Order;
 import com.switchfully.eurder.order.domain.OrderRepository;
+import com.switchfully.eurder.order.exceptions.ItemNotFoundException;
 import com.switchfully.eurder.order.service.dtos.OrderDto;
 import com.switchfully.eurder.order.service.dtos.UserInputOrderDto;
 import com.switchfully.eurder.order.service.mappers.OrderMapper;
+import com.switchfully.eurder.user.domain.Role;
 import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.exceptions.UnauthorizedEndPointException;
 import com.switchfully.eurder.user.service.CustomerService;
 import com.switchfully.eurder.user.service.mappers.CustomerMapper;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -42,6 +47,9 @@ public class OrderService {
         customerService.checkIfUuidExists(userId);
         customerService.checkIfCustomer(userId);
 
+        //Check that item exists
+        checkIfItemExists(userInputOrderDto);
+
         // go get the item info + edit stock ; return item dto
         List<ItemDto> orderedItems = fetchDesiredItems(userInputOrderDto);
 
@@ -63,5 +71,13 @@ public class OrderService {
 
     public List<ItemGroups> createItemGroups(List<UserInputOrderDto> userInput, List<ItemDto> orderedItems){
         return orderMapper.listItemGroupsToDto(userInput, orderedItems);
+    }
+
+    public String checkIfItemExists(List<UserInputOrderDto> userInput){
+        if(!itemRepository.getAllItemsNames()
+                .containsAll(userInput.stream().map(ui -> ui.getItemName()).collect(Collectors.toList()))){
+            throw new ItemNotFoundException();
+        }
+        return "Item(s) Found";
     }
 }
