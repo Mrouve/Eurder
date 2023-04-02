@@ -113,10 +113,10 @@ class ItemServiceTest {
         CreateItemDto itemDtoWithNewName = new CreateItemDto("newNameRandom","descr", 100,100);
 
         //When
-        String stringReturned = itemService.checkIfNameExists(itemDtoWithNewName);
+        String stringReturned = itemService.checkIfNameExists(itemDtoWithNewName, "create");
 
         //Then
-        assertEquals(stringReturned, "No item with this name yet");
+        assertEquals(stringReturned, "No Exception, lets continue");
 
 
     }
@@ -126,7 +126,12 @@ class ItemServiceTest {
         //Given item1 and createItemDto as defined in setup (same name)
         //Then
         assertThatRuntimeException()
-                .isThrownBy(() -> itemService.checkIfNameExists(createItemDto))
+                .isThrownBy(() -> itemService.checkIfNameExists(createItemDto,"create"))
                 .withMessage("An item with the exact same name already exists");
+    }
+
+    @Test
+    void updateItem_givenACreateItemDto_thenReturnTheUpdatedCorrespondingItem(){
+
     }
 }

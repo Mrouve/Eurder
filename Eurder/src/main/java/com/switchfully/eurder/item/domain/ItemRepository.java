@@ -23,6 +23,11 @@ public class ItemRepository {
         return item;
     }
 
+    public Item updateItem(Item itemToUpdate){
+        itemsByUuid.put(itemToUpdate.getItemUuid(), itemToUpdate);
+        return itemToUpdate;
+    }
+
     public ConcurrentHashMap<UUID, Item> getItemsByUuid() {
         return itemsByUuid;
     }

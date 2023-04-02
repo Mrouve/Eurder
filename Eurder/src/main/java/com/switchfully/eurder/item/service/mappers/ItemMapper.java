@@ -13,6 +13,10 @@ public class ItemMapper {
         return new Item(createItemDto.getItemName(), createItemDto.getItemDescription(), createItemDto.getItemPrice(),createItemDto.getItemInStock());
     }
 
+    public Item fromDtoWithUuid(ItemDto itemDto){
+        return new Item(itemDto.getItemUuid(), itemDto.getItemName(), itemDto.getItemDescription(), itemDto.getItemPrice(), itemDto.getItemInStock());
+    }
+
     public ItemDto toDto(Item item){
         return new ItemDto(item.getItemUuid(), item.getItemName(), item.getItemDescription(), item.getItemPrice(), item.getItemInStock());
     }

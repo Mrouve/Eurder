@@ -36,4 +36,20 @@ public class ItemDto {
     public double getItemPrice() {
         return itemPrice;
     }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public void setItemPrice(double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public void setItemInStock(int itemInStock) {
+        this.itemInStock = itemInStock;
+    }
 }

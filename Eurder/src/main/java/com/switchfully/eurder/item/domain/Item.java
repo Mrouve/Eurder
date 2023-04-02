@@ -19,6 +19,14 @@ public class Item {
         this.itemPrice = itemPrice;
         this.itemInStock = itemInStock;
     }
+    public Item(UUID itemUuid, String itemName, String itemDescription, double itemPrice, int itemInStock) {
+        this.itemUuid = itemUuid;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
+        this.itemPrice = itemPrice;
+        this.itemInStock = itemInStock;
+    }
+
 
     @Override
     public boolean equals(Object o) {
