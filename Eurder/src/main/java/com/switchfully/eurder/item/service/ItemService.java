@@ -2,10 +2,12 @@ package com.switchfully.eurder.item.service;
 
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
+import com.switchfully.eurder.item.exceptions.ItemAlreadyExistsException;
 import com.switchfully.eurder.item.service.dtos.CreateItemDto;
 import com.switchfully.eurder.item.service.dtos.ItemDto;
 import com.switchfully.eurder.item.service.mappers.ItemMapper;
 import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.exceptions.UnauthorizedEndPointException;
 import com.switchfully.eurder.user.service.CustomerService;
 import com.switchfully.eurder.user.service.CustomerService.*;
 import org.springframework.stereotype.Service;
@@ -30,9 +32,18 @@ public class ItemService {
         customerService.checkIfUuidExists(userId);
         customerService.checkIfAdmin(userId);
 
+        checkIfNameExists(createItemDto);
+
         Item newItem = itemMapper.fromDto(createItemDto);
         Item ItemToSave = itemRepository.saveItem(newItem);
         return itemMapper.toDto(ItemToSave);
+    }
+
+    public String checkIfNameExists(CreateItemDto createItemDto){
+        if(itemRepository.getAllItemsNames().contains(createItemDto.getItemName())){
+            throw new ItemAlreadyExistsException();
+        }
+        return "No item with this name yet";
     }
 
 

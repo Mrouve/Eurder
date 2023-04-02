@@ -39,25 +39,11 @@ public class ItemRepository {
                 .filter(ui -> itemNamesInUserInput.contains(ui.getItemName()))
                         .collect(Collectors.toList());
 
-//        List<Item> orderedItems = itemsByUuid.values().stream()
-//                .filter(i -> userInputOrderDto.stream()
-//                        .anyMatch(ui -> ui.getItemName().equals(i.getItemName())))
-//                .collect(Collectors.toList());
-
         editStock(orderedItems, userInputOrderDto);
         return orderedItems;
     }
 
     public List<Item> editStock(List<Item> orderedItems, List<UserInputOrderDto> userInput) {
-//        return orderedItems.stream()
-//                .forEach(i -> userInput.stream()
-//                        .forEach(ui -> {
-//                                    if (ui.getItemName().equals(i.getItemName())){
-//                                        i.setItemInStock(i.getItemInStock() - ui.getQuantity());
-//                                    }
-//                                }
-//                        ));
-
         for (int i = 0; i < orderedItems.size(); i++) {
             for (int j = 0; j < userInput.size(); j++) {
                 if (orderedItems.get(i).getItemName().equals(userInput.get(j).getItemName())) {
