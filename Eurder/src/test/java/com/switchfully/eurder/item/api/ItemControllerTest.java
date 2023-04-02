@@ -45,6 +45,8 @@ class ItemControllerTest {
 
         itemService = new ItemService(itemRepository,itemMapper,customerService,userRepository);
         createItemDto = new CreateItemDto("itemName1", "itemDescription1", 10.02, 4);
+        item1 = new Item("itemName1", "descrPreUpdate", 1,1);
+        itemRepository.saveItem(item1);
 
         admin1 = new Admin("admin1", LocalDate.of(2023,1,1));
         customer1 = new Customer.CustomerBuilder()
@@ -54,7 +56,6 @@ class ItemControllerTest {
                 .withAddress(new Address("street1", "streetNber1", "postalCode1", "city1", "country1"))
                 .withPhoneNumber(123456789L)
                 .build();
-
         userRepository.save(admin1);
         userRepository.save(customer1);
 
@@ -75,5 +76,20 @@ class ItemControllerTest {
         assertEquals(returnedItemDto.getItemInStock(), createItemDto.getItemInStock());
         assertEquals(returnedItemDto.getItemPrice(), createItemDto.getItemPrice());
         assertEquals(returnedItemDto.getItemDescription(), createItemDto.getItemDescription());
+    }
+
+    @Test
+    void updateItem_givenAValidCreateItemDto_returnUpdatedExistingItem(){
+        //Given
+        CreateItemDto updateItemDto = new CreateItemDto("itemName1", "descrUpdated", 500,800);
+
+        //When
+        ItemDto updatedItemAsDto = itemController.updateItem(updateItemDto, admin1.getUuid().toString());
+
+        //Then
+        assertEquals(updatedItemAsDto.getItemUuid(), item1.getItemUuid());
+        assertEquals(updatedItemAsDto.getItemDescription(), "descrUpdated");
+        assertEquals(updatedItemAsDto.getItemPrice(), 500);
+        assertEquals(updatedItemAsDto.getItemInStock(), 800);
     }
 }
