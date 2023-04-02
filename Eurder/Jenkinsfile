@@ -10,11 +10,12 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cd Eurder'
-                sh 'mvn clean--file *.pom install -DskipTests'
+                sh 'mvn install -DskipTests'
             }
         }
         stage('Test-Stage') {
             steps {
+                sh 'cd Eurder'
                 sh 'mvn test'
             }
         }
