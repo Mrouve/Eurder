@@ -46,6 +46,8 @@ class ItemServiceTest {
 
         itemService = new ItemService(itemRepository,itemMapper,customerService,userRepository);
         createItemDto = new CreateItemDto("itemName1", "itemDescription1", 10.02, 4);
+        item1 = new Item("itemName1", "descr", 40, 40);
+        itemRepository.saveItem(item1);
 
         admin1 = new Admin("admin1", LocalDate.of(2023,1,1));
         customer1 = new Customer.CustomerBuilder()
@@ -55,7 +57,6 @@ class ItemServiceTest {
                 .withAddress(new Address("street1", "streetNber1", "postalCode1", "city1", "country1"))
                 .withPhoneNumber(123456789L)
                 .build();
-
         userRepository.save(admin1);
         userRepository.save(customer1);
     }
@@ -106,8 +107,26 @@ class ItemServiceTest {
                 .withMessage("This Unique Id does not exists");
     }
 
+    @Test
+    void checkIfNameExists_givenANewItemName_thenShouldReturnTheExpectedStringMessage(){
+        //Given
+        CreateItemDto itemDtoWithNewName = new CreateItemDto("newNameRandom","descr", 100,100);
+
+        //When
+        String stringReturned = itemService.checkIfNameExists(itemDtoWithNewName);
+
+        //Then
+        assertEquals(stringReturned, "No item with this name yet");
 
 
+    }
 
-    // Admin but not a valid DTO
+    @Test
+    void checkIfNameExists_givenAnItemNameThatAlreadyExists_thenShouldThrowException(){
+        //Given item1 and createItemDto as defined in setup (same name)
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> itemService.checkIfNameExists(createItemDto))
+                .withMessage("An item with the exact same name already exists");
+    }
 }
