@@ -9,14 +9,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                //sh 'cd Eurder'
                 sh 'mvn -f Eurder/pom.xml clean install -DskipTests'
             }
         }
         stage('Test-Stage') {
             steps {
-                sh 'cd Eurder'
-                sh 'mvn test'
+                sh 'mvn -f Eurder/pom.xml test'
             }
         }
     }
