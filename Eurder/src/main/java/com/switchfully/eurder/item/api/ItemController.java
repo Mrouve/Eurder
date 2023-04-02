@@ -16,11 +16,18 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    //POST=============================================================================================================
+    //POST==============================================================================================================
     @PostMapping(path="", consumes = "application/json", produces="application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto create(@RequestBody CreateItemDto createItemDto, @RequestHeader String userId){
         return itemService.saveItem(createItemDto, userId);
+    }
+
+    //PUT===============================================================================================================
+    @PutMapping(consumes="application/json", produces="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto updateItem(@RequestBody CreateItemDto updateItemDto, @RequestHeader String userId){
+        return itemService.updateItem(updateItemDto, userId);
     }
 
 

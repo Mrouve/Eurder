@@ -32,18 +32,40 @@ public class ItemService {
         customerService.checkIfUuidExists(userId);
         customerService.checkIfAdmin(userId);
 
-        checkIfNameExists(createItemDto);
+        checkIfNameExists(createItemDto, "create");
 
         Item newItem = itemMapper.fromDto(createItemDto);
         Item ItemToSave = itemRepository.saveItem(newItem);
         return itemMapper.toDto(ItemToSave);
     }
 
-    public String checkIfNameExists(CreateItemDto createItemDto){
-        if(itemRepository.getAllItemsNames().contains(createItemDto.getItemName())){
+    public ItemDto updateItem(CreateItemDto updateItemDto, String userId){
+        customerService.checkIfValidUuidFormat(userId);
+        customerService.checkIfUuidExists(userId);
+        customerService.checkIfAdmin(userId);
+;
+        checkIfNameExists(updateItemDto, "update");
+
+        ItemDto existingItemToUpdate = itemMapper.toDto(itemRepository.getItemsByUuid().values().stream()
+                .filter(i -> i.getItemName().equals(updateItemDto.getItemName()))
+                .findFirst()
+                .orElseThrow());
+
+        existingItemToUpdate.setItemName(updateItemDto.getItemName());
+        existingItemToUpdate.setItemDescription(updateItemDto.getItemDescription());
+        existingItemToUpdate.setItemPrice(updateItemDto.getItemPrice());
+        existingItemToUpdate.setItemInStock(updateItemDto.getItemInStock());
+
+        Item itemToUpdate = itemMapper.fromDtoWithUuid(existingItemToUpdate);
+        Item itemUpdated = itemRepository.updateItem(itemToUpdate);
+        return itemMapper.toDto(itemUpdated);
+    }
+
+    public String checkIfNameExists(CreateItemDto createItemDto, String actionToPerform){
+        if(itemRepository.getAllItemsNames().contains(createItemDto.getItemName()) && actionToPerform.equals("create")){
             throw new ItemAlreadyExistsException();
         }
-        return "No item with this name yet";
+        return "No Exception, lets continue";
     }
 
 

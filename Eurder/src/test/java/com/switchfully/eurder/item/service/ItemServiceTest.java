@@ -64,14 +64,17 @@ class ItemServiceTest {
     @Test
     void saveItem_givenAValidCreateItemDto_thenShouldBeReturnedAValidItemDto_CaseUserIsAdmin() {
         //Given
-        ItemDto ItemToSaveDto = itemService.saveItem(createItemDto, admin1.getUuid().toString());
+        CreateItemDto newCreateItemDto = new CreateItemDto("test", "desc", 1,1);
+
+        //When
+        ItemDto ItemToSaveDto = itemService.saveItem(newCreateItemDto, admin1.getUuid().toString());
 
         //Then
         assertNotNull(ItemToSaveDto.getItemUuid());
-        assertEquals(ItemToSaveDto.getItemName(), createItemDto.getItemName());
-        assertEquals(ItemToSaveDto.getItemDescription(), createItemDto.getItemDescription());
-        assertEquals(ItemToSaveDto.getItemPrice(), createItemDto.getItemPrice());
-        assertEquals(ItemToSaveDto.getItemInStock(), createItemDto.getItemInStock());
+        assertEquals(ItemToSaveDto.getItemName(), newCreateItemDto.getItemName());
+        assertEquals(ItemToSaveDto.getItemDescription(), newCreateItemDto.getItemDescription());
+        assertEquals(ItemToSaveDto.getItemPrice(), newCreateItemDto.getItemPrice());
+        assertEquals(ItemToSaveDto.getItemInStock(), newCreateItemDto.getItemInStock());
     }
 
     @Test
@@ -113,10 +116,10 @@ class ItemServiceTest {
         CreateItemDto itemDtoWithNewName = new CreateItemDto("newNameRandom","descr", 100,100);
 
         //When
-        String stringReturned = itemService.checkIfNameExists(itemDtoWithNewName);
+        String stringReturned = itemService.checkIfNameExists(itemDtoWithNewName, "create");
 
         //Then
-        assertEquals(stringReturned, "No item with this name yet");
+        assertEquals(stringReturned, "No Exception, lets continue");
 
 
     }
@@ -126,7 +129,22 @@ class ItemServiceTest {
         //Given item1 and createItemDto as defined in setup (same name)
         //Then
         assertThatRuntimeException()
-                .isThrownBy(() -> itemService.checkIfNameExists(createItemDto))
+                .isThrownBy(() -> itemService.checkIfNameExists(createItemDto,"create"))
                 .withMessage("An item with the exact same name already exists");
+    }
+
+    @Test
+    void updateItem_givenACreateItemDto_thenReturnTheUpdatedCorrespondingItem(){
+        //Given
+        CreateItemDto updateItemDto = new CreateItemDto("itemName1", "descrUpdated", 500,800);
+
+        //When
+        ItemDto existingItemToUpdate = itemService.updateItem(updateItemDto, admin1.getUuid().toString());
+
+        //Then
+        assertEquals(existingItemToUpdate.getItemUuid(), item1.getItemUuid());
+        assertEquals(existingItemToUpdate.getItemDescription(), updateItemDto.getItemDescription());
+        assertEquals(existingItemToUpdate.getItemPrice(), updateItemDto.getItemPrice());
+        assertEquals(existingItemToUpdate.getItemInStock(), updateItemDto.getItemInStock());
     }
 }

@@ -98,4 +98,21 @@ class ItemRepositoryTest {
         assertTrue(returnedItemNames.contains("name2"));
         assertEquals(returnedItemNames.size(), 2);
     }
+
+    @Test
+    void updateItem_givenANewItem_UpdateTheExistingItemWithoutChangingItsUUID(){
+        //Given
+        Item newItemContainingUpdates = new Item("name1", "updatedDescr", 500, 500);
+
+        //When
+        Item updatedItem = itemRepository.updateItem(newItemContainingUpdates);
+
+        //Then
+        assertEquals(updatedItem.getItemUuid(), newItemContainingUpdates.getItemUuid());
+        assertEquals(updatedItem.getItemPrice(), newItemContainingUpdates.getItemPrice());
+        assertEquals(updatedItem.getItemName(), newItemContainingUpdates.getItemName());
+        assertEquals(updatedItem.getItemDescription(), newItemContainingUpdates.getItemDescription());
+        assertEquals(updatedItem.getItemPrice(), newItemContainingUpdates.getItemPrice());
+        assertEquals(updatedItem.getItemInStock(), newItemContainingUpdates.getItemInStock());
+    }
 }
