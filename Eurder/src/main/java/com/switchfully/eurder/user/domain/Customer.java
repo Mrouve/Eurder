@@ -3,20 +3,20 @@ package com.switchfully.eurder.user.domain;
 import com.switchfully.eurder.user.exceptions.IncompleteAddressException;
 import com.switchfully.eurder.user.exceptions.InvalidCustomerFieldFormatException;
 import com.switchfully.eurder.user.exceptions.InvalidEmailFormatException;
+import com.switchfully.eurder.user.exceptions.MissingMandatoryInformationException;
 
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Customer extends User{
     //Vars
     //private final UUID uuid;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private Address address;
-    private Long phoneNumber;
+    private final String firstname;
+    private final String lastname;
+    private final String email;
+    private final Address address;
+    private final Long phoneNumber;
     //private Role role;
 
     //Constructors
@@ -32,22 +32,19 @@ public class Customer extends User{
     }
 
     //Methods
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        //return Objects.equals(uuid, customer.uuid) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
-        return Objects.equals(super.getUuid(), super.getUuid()) && Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
-
+        return Objects.equals(firstname, customer.firstname) && Objects.equals(lastname, customer.lastname) && Objects.equals(email, customer.email) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber);
     }
 
     @Override
-//    public int hashCode() {
-//        return Objects.hash(uuid, firstname, lastname, email, address, phoneNumber);
-//    }
     public int hashCode() {
-        return Objects.hash(super.getUuid(), firstname, lastname, email, address, phoneNumber);
+        return Objects.hash(firstname, lastname, email, address, phoneNumber);
     }
 
     //==================================================================================================================
@@ -60,11 +57,17 @@ public class Customer extends User{
         private Long phoneNumber;
 
         public CustomerBuilder withFirstname(String firstname) {
+            if (firstname ==null || firstname.isEmpty()) {
+                throw new MissingMandatoryInformationException();
+            }
             this.firstname = firstname;
             return this;
         }
 
         public CustomerBuilder withLastname(String lastname) {
+            if (lastname ==null || lastname.isEmpty()) {
+                throw new MissingMandatoryInformationException();
+            }
             this.lastname = lastname;
             return this;
         }

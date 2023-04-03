@@ -19,8 +19,6 @@ import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerServiceTest {
-    private UserRepository userRepository;
-    private CustomerMapper customerMapper;
     private CustomerService customerService;
     private Customer customer1;
     private Customer customer2;
@@ -31,9 +29,9 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setup(){
-        userRepository = new UserRepository();
-        customerMapper = new CustomerMapper();
-        customerService = new CustomerService(userRepository,customerMapper);
+        UserRepository userRepository = new UserRepository();
+        CustomerMapper customerMapper = new CustomerMapper();
+        customerService = new CustomerService(userRepository, customerMapper);
         customer1 = new Customer.CustomerBuilder()
                 .withFirstname("fn1")
                 .withLastname("ln1")
@@ -154,6 +152,68 @@ class CustomerServiceTest {
         assertThatRuntimeException()
                 .isThrownBy(() -> customerService.getOneCustomerByUuid(existingUUID.toString(), randomUUID.toString()))
                 .withMessage("This Unique Id does not exists");
+    }
+
+    @Test
+    void save_givenAnEmptyFirstname_thenThrowTheCorrespondingError(){
+        //Given
+        CreateCustomerDto customerNoFirstname = new CreateCustomerDto("","fsdf","fsdfsdf@gfgf.com",
+                new Address("street2", "streetNber2", "postalCode2", "city2", "country2"),
+                123456789L);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.save(customerNoFirstname))
+                .withMessage("A mandatory information is missing");
+    }
+
+    @Test
+    void save_givenAnEmptyLastname_thenThrowCorrespondingError(){
+        //Given
+        CreateCustomerDto customerNoLastname = new CreateCustomerDto("sdfdsf","","fsdfsdf@gfgf.com",
+                new Address("street2", "streetNber2", "postalCode2", "city2", "country2"),
+                123456789L);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.save(customerNoLastname))
+                .withMessage("A mandatory information is missing");
+    }
+
+    @Test
+    void save_givenAWrongFormatEmail_thenThrowCorrespondingError(){
+        CreateCustomerDto customerNoValidEmail = new CreateCustomerDto("sdfdsf","gfdgf","notValid",
+                new Address("street2", "streetNber2", "postalCode2", "city2", "country2"),
+                123456789L);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.save(customerNoValidEmail))
+                .withMessage("Invalid email: notValid");
+    }
+
+    @Test
+    void save_givenAPhoneNumberTooShort_thenThrowCorrespondingError(){
+        CreateCustomerDto customerNoValidPhoneNumber = new CreateCustomerDto("sdfdsf","gfdgf","fdsfds@gdg.com",
+                new Address("street2", "streetNber2", "postalCode2", "city2", "country2"),
+                1234567L);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.save(customerNoValidPhoneNumber))
+                .withMessage("This phone number is too short to be of any valid format");
+    }
+
+    @Test
+    void save_givenAnIncompleteAddress_thenThrowCorrespondingError(){
+        CreateCustomerDto customerNoFullAddress = new CreateCustomerDto("sdfdsf","gfdgf","fdsfds@gdg.com",
+                new Address("street2", "streetNber2", "postalCode2", "", "country2"),
+                123456789L);
+
+        //Then
+        assertThatRuntimeException()
+                .isThrownBy(() -> customerService.save(customerNoFullAddress))
+                .withMessage("The address is not complete");
     }
 
 }
