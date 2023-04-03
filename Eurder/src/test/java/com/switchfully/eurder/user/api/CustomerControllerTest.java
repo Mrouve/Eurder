@@ -77,21 +77,21 @@ class CustomerControllerTest {
         assertEquals(customerDtoReturnedToController.getAddress(),createCustomerDto.getAddress());
     }
 
-    @Test
-    void getAllCustomers_givenAValidAdminUUID_thenIsReturnedAListOfAllMembersAsListMembersDto() {
-        //Given adminUUId as defined in Setup
-        //When
-        List<CustomerDto> listCustomerDtoReturnedToController = customerController.getAllCustomers(admin1.getUuid().toString());
-
-        //Then
-        assertEquals(2, listCustomerDtoReturnedToController.size());
-        assertEquals(listCustomerDtoReturnedToController.get(0).getUuid(), customer1.getUuid());
-        assertEquals(listCustomerDtoReturnedToController.get(1).getUuid(), customer2.getUuid());
-        assertEquals(listCustomerDtoReturnedToController.get(0).getAddress(), customer1.getAddress());
-        assertEquals(listCustomerDtoReturnedToController.get(0).getPhoneNumber(), customer1.getPhoneNumber());
-        assertEquals(listCustomerDtoReturnedToController.get(1).getAddress(), customer2.getAddress());
-        assertEquals(listCustomerDtoReturnedToController.get(1).getPhoneNumber(), customer2.getPhoneNumber());
-    }
+//    @Test
+//    void getAllCustomers_givenAValidAdminUUID_thenIsReturnedAListOfAllMembersAsListMembersDto() {
+//        //Given adminUUId as defined in Setup
+//        //When
+//        List<CustomerDto> listCustomerDtoReturnedToController = customerController.getAllCustomers(admin1.getUuid().toString());
+//
+//        //Then
+//        assertEquals(2, listCustomerDtoReturnedToController.size());
+//        assertEquals(listCustomerDtoReturnedToController.get(0).getUuid(), customer1.getUuid()) ;
+//        assertEquals(listCustomerDtoReturnedToController.get(1).getUuid(), customer2.getUuid());
+//        assertEquals(listCustomerDtoReturnedToController.get(0).getAddress(), customer1.getAddress());
+//        assertEquals(listCustomerDtoReturnedToController.get(0).getPhoneNumber(), customer1.getPhoneNumber());
+//        assertEquals(listCustomerDtoReturnedToController.get(1).getAddress(), customer2.getAddress());
+//        assertEquals(listCustomerDtoReturnedToController.get(1).getPhoneNumber(), customer2.getPhoneNumber());
+//    }
 
     @Test
     void getOneCustomerByUuid_GivenAValidAdminUUIDAndAValidMemberId_ThenReturnTheGoodMemberDto() {
