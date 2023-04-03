@@ -8,6 +8,7 @@ import com.switchfully.eurder.user.service.dtos.CustomerDto;
 import com.switchfully.eurder.user.service.mappers.CustomerMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,10 @@ public class CustomerService {
                 .filter(c -> c instanceof Customer)
                 .map(cc -> (Customer) cc)
                 .distinct()
+                .sorted(Comparator.comparing(Customer::getLastname))
                 .toList();
+
+        //listOfCustomers.sort(Customer::getLastname);
         return customerMapper.toDtoList(listOfCustomers);
     }
 
